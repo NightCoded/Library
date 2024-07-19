@@ -379,6 +379,14 @@ local dragInput
 local dragStart
 local startPos
 
+local function centerGui()
+    local screenWidth = game:GetService("GuiService"):GetScreenResolution().X
+    local screenHeight = game:GetService("GuiService"):GetScreenResolution().Y
+    main.Position = UDim2.new(0.5, -main.Size.X.Offset / 2, 0.5, -main.Size.Y.Offset / 2)
+    end
+    
+    centerGui()
+
 local function update(input)
     local delta = input.Position - dragStart
     main.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
