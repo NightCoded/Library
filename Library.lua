@@ -1,7 +1,7 @@
 local library = {
     Flags = {},
-    SectionsOpened = false,
-    Theme = "Starry Night"
+    SectionsOpened = true,
+    Theme = "Tokyo Night"
 }
 library.flags = library.Flags
 library.theme = library.Theme
@@ -39,7 +39,8 @@ local Themes = {
         ToggleInnerEnabled = Color3.fromRGB(80, 201, 206),
         ContainerHolder = Color3.fromRGB(26, 26, 31),
         HighlightUIStroke = Color3.fromRGB(79, 79, 86),
-        Highlight = Color3.fromRGB(80, 201, 206)
+        Highlight = Color3.fromRGB(80, 201, 206),
+        ElementText = Color3.fromRGB(8, 242, 155)
     },
     ["Tokyo Night"] = {
         Topbar = Color3.fromRGB(39, 40, 57),
@@ -73,7 +74,8 @@ local Themes = {
         ToggleInnerEnabled = Color3.fromRGB(255, 183, 38),
         ContainerHolder = Color3.fromRGB(32, 32, 47),
         HighlightUIStroke = Color3.fromRGB(86, 89, 127),
-        Highlight = Color3.fromRGB(253, 191, 67)
+        Highlight = Color3.fromRGB(253, 191, 67),
+        ElementText = Color3.fromRGB(8, 242, 155)
     },
     ["Starry Night"] = {
         Topbar = Color3.fromRGB(21, 26, 33),
@@ -107,20 +109,33 @@ local Themes = {
         ToggleInnerEnabled = Color3.fromRGB(255, 211, 105),
         ContainerHolder = Color3.fromRGB(25, 32, 43),
         HighlightUIStroke = Color3.fromRGB(79, 94, 124),
-        Highlight = Color3.fromRGB(255, 229, 121)
+        Highlight = Color3.fromRGB(255, 229, 121),
+        ElementText = Color3.fromRGB(8, 242, 155)
     }
 }
 
+local Images = {
+        Close = "rbxassetid://10738425363",
+        Chevron = "rbxassetid://17792602852",
+        Circle = "rbxassetid://17792661567",
+        Minimize = "rbxassetid://10664064072",
+        Shadow = "rbxassetid://832989466"
+        }
+
+local Sound = {
+        Clicked = "rbxassetid://9126031699",
+        Beep = "rbxassetid://5120879183"
+        }
+
+-- For unpublished games, use this in the Command Bar:
 local HttpService = game:GetService("HttpService")
-local CoreGui = game:GetService("CoreGui")
+local CoreGui = game:GetService("StarterGui")
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 
 local Mouse = game.Players.LocalPlayer:GetMouse()
 
 local Blacklist = {Enum.KeyCode.Unknown, Enum.KeyCode.CapsLock, Enum.KeyCode.Escape, Enum.KeyCode.Tab, Enum.KeyCode.Return, Enum.KeyCode.Backspace, Enum.KeyCode.Space, Enum.KeyCode.W, Enum.KeyCode.A, Enum.KeyCode.S, Enum.KeyCode.D}
-
-local request = syn and syn.request or http and http.request or http_request or request or httprequest
 
 
 local SelectedTab = nil
@@ -236,7 +251,7 @@ notificationTopbarLine.Parent = topbar
 
 local notificationCloseButton = Instance.new("ImageButton")
 notificationCloseButton.Name = "NotificationCloseButton"
-notificationCloseButton.Image = "rbxassetid://10738425363"
+notificationCloseButton.Image = Images.Close
 notificationCloseButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 notificationCloseButton.ImageColor3 = Theme.SectionText
 notificationCloseButton.BackgroundTransparency = 1
@@ -345,31 +360,33 @@ shadow.Parent = CoreGui
 
 local mainShadow = Instance.new("ImageLabel")
 mainShadow.Name = "MainShadow"
+mainShadow.Image = Images.Shadow
 mainShadow.ImageColor3 = Theme.Shadow
 mainShadow.ImageTransparency = 0.2
 mainShadow.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 mainShadow.BackgroundTransparency = 1
 mainShadow.Position = UDim2.new(0.339, 0, 0.279, 0)
-mainShadow.Size = UDim2.new(0, 520, 0, 300)
+mainShadow.Size = UDim2.new(0, 520, 0, 370)
 mainShadow.Parent = shadow
 
 local main = Instance.new("Frame")
 main.Name = "Main"
 main.BackgroundColor3 = Theme.Main
 main.BorderSizePixel = 0
-main.Position = UDim2.new(0.345, 0, 0.291, 0)
-main.Size = UDim2.new(0, 500, 0, 280)
+main.Position = UDim2.new(0.175, 0, -0.100, 0)
+main.Size = UDim2.new(0, 500, 0, 350)
 main.Parent = unnamed
 main.ClipsDescendants = true
+
 
 local function centerGui()
     local screenWidth = game:GetService("GuiService"):GetScreenResolution().X
     local screenHeight = game:GetService("GuiService"):GetScreenResolution().Y
-    main.Position = UDim2.new(0.5, -main.Size.X.Offset / 2, 0.5, -main.Size.Y.Offset / 5)
+    main.Position = UDim2.new(0.5, -main.Size.X.Offset / 2, 0.5, -main.Size.Y.Offset / 2)
     end
     
     centerGui()
-
+    
 local uICorner = Instance.new("UICorner")
 uICorner.Name = "UICorner"
 uICorner.CornerRadius = UDim.new(0, 3)
@@ -450,13 +467,17 @@ windowName.Parent = topbar
 
 local closeButton = Instance.new("ImageButton")
 closeButton.Name = "CloseButton"
-closeButton.Image = "rbxassetid://10738425363"
+closeButton.Image = Images.Close
 closeButton.ImageTransparency = 0.1
 closeButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 closeButton.BackgroundTransparency = 1
-closeButton.Position = UDim2.new(0.954, 3, 0.235, 0)
+closeButton.Position = UDim2.new(0.920, 3, 0.235, 0)
 closeButton.Size = UDim2.new(0, 17, 0, 17)
 closeButton.Parent = topbar
+
+local closeSound = Instance.new("Sound")
+    closeSound.SoundId = Sound.Clicked -- Ganti dengan asset ID suara yang Anda inginkan
+    closeSound.Parent = closeButton
 
 closeButton.MouseEnter:Connect(function()
     TweenService:Create(closeButton, TweenInfo.new(.125, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {ImageColor3 = Color3.fromRGB(255, 66, 66)}):Play()
@@ -467,6 +488,7 @@ closeButton.MouseLeave:Connect(function()
 end)
 
 closeButton.MouseButton1Click:Connect(function()
+closeSound:Play()
     unnamed:Destroy()
     shadow:Destroy()
     notifications:Destroy()
@@ -474,13 +496,17 @@ end)
 
 local minimizeButton = Instance.new("ImageButton")
 minimizeButton.Name = "ImageButton"
-minimizeButton.Image = "rbxassetid://10664064072"
+minimizeButton.Image = Images.Minimize
 minimizeButton.ImageTransparency = 0.1
 minimizeButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 minimizeButton.BackgroundTransparency = 1
-minimizeButton.Position = UDim2.new(0.954, -18, 0.235, 0)
+minimizeButton.Position = UDim2.new(0.880, -18, 0.235, 0)
 minimizeButton.Size = UDim2.new(0, 17, 0, 17)
 minimizeButton.Parent = topbar
+
+local minimSound = Instance.new("Sound")
+    minimSound.SoundId = Sound.Clicked -- Ganti dengan asset ID suara yang Anda inginkan
+    minimSound.Parent = minimizeButton
 
 minimizeButton.MouseEnter:Connect(function()
     TweenService:Create(minimizeButton, TweenInfo.new(.125, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {ImageColor3 = Theme.Highlight}):Play()
@@ -494,7 +520,7 @@ local Minimized = false
 
 minimizeButton.MouseButton1Click:Connect(function()
     Minimized = not Minimized
-   
+   minimSound:Play()
     if Minimized then
         topbar.TopbarLine.Visible = false
         mainShadow.Visible = false
@@ -758,9 +784,13 @@ sectionButton.Size = UDim2.new(0, 175, 0, 28)
 sectionButton.Parent = sectionFrame
 sectionButton.ZIndex = Sections + 1
 
+local sectionSound = Instance.new("Sound")
+    sectionSound.SoundId = Sound.Beep -- Ganti dengan asset ID suara yang Anda inginkan
+    sectionSound.Parent = sectionButton
+
 local sectionIcon = Instance.new("ImageLabel")
 sectionIcon.Name = "SectionIcon"
-sectionIcon.Image = "rbxassetid://832543330"
+sectionIcon.Image = Images.Chevron
 sectionIcon.ImageColor3 = Theme.SectionText
 sectionIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 sectionIcon.BackgroundTransparency = 1
@@ -792,6 +822,7 @@ itemContainer.Parent = containerHolder
 local SectionY = 28
 local ContainerY = 0
 
+
 itemContainer.ChildAdded:Connect(function(v)
     if v.ClassName ~= "UIListLayout" then
         if v.Name ~= "Slider" then
@@ -803,6 +834,8 @@ itemContainer.ChildAdded:Connect(function(v)
         end
     end
 end)
+
+       
 
 
 local OpenedSec = false
@@ -831,6 +864,7 @@ end
 end)
 
 sectionButton.MouseButton1Click:Connect(function()
+sectionSound:Play()
     sectiontable:Select()
 end)
 
@@ -1061,13 +1095,13 @@ sliderInnerUICorner.Parent = sliderInner
 
 local dragIcon = Instance.new("ImageLabel")
 dragIcon.Name = "dragIcon"
-dragIcon.Image = "rbxassetid://832339474"
+dragIcon.Image = Images.Circle
 dragIcon.ImageColor3 = Theme.ItemText
 dragIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 dragIcon.BackgroundTransparency = 1
 dragIcon.BorderSizePixel = 0
 dragIcon.Position = UDim2.new(DefaultScale, -5, 0, -2)
-dragIcon.Size = UDim2.new(0, 9, 0, 9)
+dragIcon.Size = UDim2.new(0, 10, 0, 10)
 dragIcon.Parent = sliderOuter
 
 local dragButton = Instance.new("TextButton")
@@ -1081,6 +1115,12 @@ dragButton.BackgroundTransparency = 1
 dragButton.Size = UDim2.new(0, 9, 0, 9)
 dragButton.Parent = dragIcon
 
+local dragSound = Instance.new("Sound")
+    dragSound.SoundId = Sound.Clicked -- Ganti dengan asset ID suara yang Anda inginkan
+    dragSound.Parent = dragButton
+    dragSound.Volume = 0.4
+    
+    
 sliderFrame.MouseEnter:Connect(function()
     TweenService:Create(sliderFrame, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {BackgroundColor3 = Theme.HoverItemFrame}):Play()
 end)
@@ -1109,28 +1149,44 @@ local MaxSize = 1
 local SizeFromScale = (MinSize +  (MaxSize - MinSize)) * DefaultScale
 SizeFromScale = SizeFromScale - (SizeFromScale % 2)
 
-dragButton.MouseButton1Down:Connect(function() -- Skidded from material ui hehe, sorry
-	local MouseMove, MouseKill
-	MouseMove = Mouse.Move:Connect(function()
-		local Px = library:GetXY(sliderOuter)
-		SizeFromScale = (MinSize +  (MaxSize - MinSize)) * Px
-		local Value = math.floor(Info.Minimum + ((Info.Maximum - Info.Minimum) * Px))
-		SizeFromScale = SizeFromScale - (SizeFromScale % 2)
-		TweenService:Create(sliderInner, TweenInfo.new(0.09, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(Px,0,0,5)}):Play()
+dragButton.MouseButton1Down:Connect(function()
+    local MouseMove, MouseKill
+    local sliderActive = true -- Penanda apakah slider sedang aktif atau tidak
+    
+    MouseMove = Mouse.Move:Connect(function()
+        if not sliderActive then return end -- Jika slider tidak aktif, hentikan pergerakan slider
+        
+        local Px = library:GetXY(sliderOuter)
+        SizeFromScale = (MinSize + (MaxSize - MinSize)) * Px
+        local Value = math.floor(Info.Minimum + ((Info.Maximum - Info.Minimum) * Px))
+        SizeFromScale = SizeFromScale - (SizeFromScale % 2)
+        TweenService:Create(sliderInner, TweenInfo.new(0.09, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = UDim2.new(Px, 0, 0, 5)}):Play()
+        dragSound:Play()
         local iconpos = math.clamp(Px, 0.00981, 0.99141)
-        TweenService:Create(dragIcon, TweenInfo.new(0.09, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Position = UDim2.new(iconpos,-5,0,-2)}):Play()
-		if Info.Flag then
-		    library.Flags[Info.Flag] = Value
-		end
-		sliderValueText.Text = tostring(Value)..Info.Postfix
-		task.spawn(Info.Callback, Value)
-	end)
-	MouseKill = UserInputService.InputEnded:Connect(function(UserInput)
-		if UserInput.UserInputType == Enum.UserInputType.MouseButton1 then
-			MouseMove:Disconnect()
-			MouseKill:Disconnect()
-		end
-	end)
+        TweenService:Create(dragIcon, TweenInfo.new(0.09, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Position = UDim2.new(iconpos, -5, 0, -2)}):Play()
+        if Info.Flag then
+            library.Flags[Info.Flag] = Value
+        end
+        sliderValueText.Text = tostring(Value) .. Info.Postfix
+        task.spawn(Info.Callback, Value)
+    end)
+    
+    MouseKill = UserInputService.InputEnded:Connect(function(UserInput)
+        if UserInput.UserInputType == Enum.UserInputType.MouseButton1 then
+            MouseMove:Disconnect()
+            MouseKill:Disconnect()
+            sliderActive = false -- Set slider menjadi tidak aktif setelah dilepaskan
+        end
+    end)
+    
+    -- Menambahkan event untuk menghentikan pergerakan slider saat GUI tidak aktif
+    local MouseLeave
+    MouseLeave = sliderFrame.MouseLeave:Connect(function()
+        MouseMove:Disconnect()
+        MouseKill:Disconnect()
+        sliderActive = false -- Set slider menjadi tidak aktif saat mouse meninggalkan area slider
+        MouseLeave:Disconnect()
+    end)
 end)
 end
 
@@ -1140,7 +1196,7 @@ Info.Flag = Info.Flag or nil
 Info.Callback = Info.Callback or function() end
 
 local input = Instance.new("Frame")
-input.Name = "Input"
+input.Name = "InputBox"
 input.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 input.BackgroundTransparency = 1
 input.Size = UDim2.new(0, 175, 0, 28)
@@ -1174,6 +1230,7 @@ textBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 textBox.BackgroundTransparency = 1
 textBox.Size = UDim2.new(0, 171, 0, 24)
 textBox.Parent = inputFrame
+
 
 inputFrame.MouseEnter:Connect(function()
     TweenService:Create(inputFrame, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {BackgroundColor3 = Theme.HoverItemFrame}):Play()
@@ -1222,6 +1279,10 @@ dropdownFrame.Position = UDim2.new(0, 2, 0, 2)
 dropdownFrame.Size = UDim2.new(0, 171, 0, 24)
 dropdownFrame.Parent = dropdown
 
+local dropSound = Instance.new("Sound")
+    dropSound.SoundId = Sound.Clicked -- Ganti dengan asset ID suara yang Anda inginkan
+    dropSound.Parent = dropdownFrame
+
 local dropdownText = Instance.new("TextLabel")
 dropdownText.Name = "dropdownText"
 dropdownText.Font = Enum.Font.GothamBold
@@ -1253,7 +1314,7 @@ dropdownUIStroke.Parent = dropdownFrame
 
 local dropdownIcon = Instance.new("ImageLabel")
 dropdownIcon.Name = "dropdownIcon"
-dropdownIcon.Image = "rbxassetid://832543330"
+dropdownIcon.Image = Images.Chevron
 dropdownIcon.ImageColor3 = Theme.ItemText
 dropdownIcon.Active = true
 dropdownIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -1498,6 +1559,10 @@ toggleFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
 toggleFrame.Size = UDim2.new(0, 171, 0, 24)
 toggleFrame.Parent = toggle
 
+local toggleSound = Instance.new("Sound")
+    toggleSound.SoundId = Sound.Clicked -- Ganti dengan asset ID suara yang Anda inginkan
+    toggleSound.Parent = toggleFrame
+
 local toggleText = Instance.new("TextLabel")
 toggleText.Name = "toggleText"
 toggleText.Font = Enum.Font.GothamBold
@@ -1528,6 +1593,7 @@ toggleUIStroke.Color = Theme.ItemUIStroke
 toggleUIStroke.Parent = toggleFrame
 
 toggleFrame.MouseEnter:Connect(function()
+toggleSound:Play()
     TweenService:Create(toggleFrame, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {BackgroundColor3 = Theme.HoverItemFrame}):Play()
 end)
 
@@ -1563,7 +1629,7 @@ toggleOuterUICorner.Parent = toggleOuter
 
 local toggleInner = Instance.new("ImageLabel")
 toggleInner.Name = "toggleInner"
-toggleInner.Image = "rbxassetid://832339474"
+toggleInner.Image = Images.Circle
 toggleInner.ImageColor3 = Theme.ToggleInner
 toggleInner.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 toggleInner.BackgroundTransparency = 1
@@ -1653,6 +1719,10 @@ buttonTextButton.BackgroundTransparency = 1
 buttonTextButton.Size = UDim2.new(0, 171, 0, 24)
 buttonTextButton.Parent = buttonFrame
 
+local buttonSound = Instance.new("Sound")
+    buttonSound.SoundId = Sound.Beep -- Ganti dengan asset ID suara yang Anda inginkan
+    buttonSound.Parent = buttonTextButton
+
 buttonTextButton.MouseButton1Down:Connect(function()
     TweenService:Create(buttonUIStroke, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {Color = Theme.ItemUIStrokeSelected}):Play()
 end)
@@ -1662,6 +1732,7 @@ buttonTextButton.MouseButton1Up:Connect(function()
 end)
 
 buttonTextButton.MouseButton1Click:Connect(function()
+buttonSound:Play()
     task.spawn(Info.Callback)
 end)
 end
@@ -1705,6 +1776,108 @@ end
 tabButton.MouseButton1Click:Connect(function()
     tabtable:Select()
 end)
+
+
+function tabtable:Executor(Info)
+Info.Title = Info.Text or "Section"
+Info.Side = Info.Side or "center"
+Info.Opened = Info.Opened or library.SectionsOpened
+
+Sections = Sections - 3
+
+local labeltable = {}
+
+local sectionLabel = Instance.new("Frame")
+sectionLabel.Name = "Section"
+sectionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+sectionLabel.BackgroundTransparency = 1
+sectionLabel.Size = UDim2.new(0, 100, 0, 30)
+
+local SectionLabelOpened = Instance.new("BoolValue", sectionLabel)
+SectionLabelOpened.Value = Info.Opened
+
+if Info.Side == "center" then
+    sectionLabel.Parent = center
+else
+    sectionLabel.Parent = Right
+end
+
+
+local sectionLabelFrame = Instance.new("Frame")
+sectionLabelFrame.Name = "SectionFrame"
+sectionLabelFrame.BackgroundColor3 = Theme.SectionFrame
+sectionLabelFrame.BorderSizePixel = 0
+sectionLabelFrame.Parent = sectionLabel
+
+local sectionLabelUICorner = Instance.new("UICorner")
+sectionLabelUICorner.Name = "SectionUICorner"
+sectionLabelUICorner.CornerRadius = UDim.new(0, 2)
+sectionLabelUICorner.Parent = sectionLabelFrame
+
+local sectionLabelName = Instance.new("TextLabel")
+sectionLabelName.Name = "SectionName"
+sectionLabelName.Font = Enum.Font.SourceSans
+sectionLabelName.Text = Info.Title
+sectionLabelName.TextColor3 = Theme.SectionText
+sectionLabelName.TextSize = 12
+sectionLabelName.TextWrapped = true
+sectionLabelName.TextXAlignment = Enum.TextXAlignment.Left
+sectionLabelName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+sectionLabelName.BackgroundTransparency = 1
+sectionLabelName.Position = UDim2.new(0.0343, 0, 0, 0)
+sectionLabelName.Parent = sectionLabelFrame
+sectionLabelName.ZIndex = Sections + 2
+
+local Sizee = string.len(sectionLabelName.Text) * 0.2
+       sectionLabelFrame.Size = UDim2.new(0, 355, 0, Sizee)
+       sectionLabelName.Size = UDim2.new(0, 335, 0, Sizee)
+
+local sectionLabelButton = Instance.new("TextButton")
+sectionLabelButton.Name = "SectionButton"
+sectionLabelButton.Font = Enum.Font.SourceSans
+sectionLabelButton.Text = ""
+sectionLabelButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+sectionLabelButton.AutoButtonColor = false
+sectionLabelButton.BackgroundTransparency = 1
+sectionLabelButton.BorderSizePixel = 0
+sectionLabelButton.BackgroundColor3 = Theme.SectionFrame
+sectionLabelButton.Size = UDim2.new(0, 355, 0, 28)
+sectionLabelButton.Parent = sectionLabelFrame
+sectionLabelButton.ZIndex = Sections + 1
+
+local containerLabelHolder = Instance.new("Frame")
+containerLabelHolder.Name = "ContainerHolder"
+containerLabelHolder.BackgroundColor3 = Theme.ContainerHolder
+containerLabelHolder.BackgroundTransparency = 0
+containerLabelHolder.ClipsDescendants = true
+containerLabelHolder.BorderSizePixel = 0
+containerLabelHolder.Visible = true
+containerLabelHolder.Position = UDim2.new(0, 0, 0, 28)
+containerLabelHolder.Size = UDim2.new(0, 355, 0, 0)
+containerLabelHolder.Parent = sectionLabelFrame
+
+local itemLabelContainer = Instance.new("Frame")
+itemLabelContainer.Name = "ItemContainer"
+itemLabelContainer.BackgroundColor3 = Theme.ContainerHolder
+itemLabelContainer.BorderSizePixel = 0
+itemLabelContainer.Size = UDim2.new(0, 355, 0, 0)
+itemLabelContainer.Parent = containerLabelHolder
+
+
+local itemLabelUIListLayout = Instance.new("UIListLayout")
+itemLabelUIListLayout.Name = "itemLabelUIListLayout"
+itemLabelUIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+itemLabelUIListLayout.Parent = itemLabelContainer
+
+local sectionLabelUIStroke = Instance.new("UIStroke")
+sectionLabelUIStroke.Name = "SectionUIStroke"
+sectionLabelUIStroke.Color = Theme.SectionUIStroke
+sectionLabelUIStroke.Parent = sectionLabelFrame
+
+
+return labeltable
+end
+
 
 return tabtable
 end
