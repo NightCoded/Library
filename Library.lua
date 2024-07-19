@@ -668,6 +668,31 @@ uIPadding.PaddingBottom = UDim.new(1, 0)
 uIPadding.PaddingLeft = UDim.new(0, 6)
 uIPadding.Parent = tabContainerScrolling
 
+local center = Instance.new("ScrollingFrame")
+center.Name = "Center"
+center.AutomaticCanvasSize = Enum.AutomaticSize.Y
+center.CanvasSize = UDim2.new()
+center.ScrollBarThickness = 0
+center.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+center.BackgroundTransparency = 1
+center.Visible = false
+center.BorderSizePixel = 0
+center.Position = UDim2.new(0, 0, 0.0195, 0)
+center.Selectable = false
+center.Size = UDim2.new(0, 364, 0, 306)
+center.Parent = containers
+
+local centerPadding = Instance.new("UIPadding")
+centerPadding.Name = "UIPadding"
+centerPadding.PaddingLeft = UDim.new(0, 6)
+centerPadding.PaddingTop = UDim.new(0, 1)
+centerPadding.Parent = center
+
+local uIListLayout0 = Instance.new("UIListLayout")
+uIListLayout0.Name = "UIListLayout"
+uIListLayout0.SortOrder = Enum.SortOrder.LayoutOrder
+uIListLayout0.Parent = center
+
 local Left = Instance.new("ScrollingFrame")
 Left.Name = "Left"
 Left.AutomaticCanvasSize = Enum.AutomaticSize.Y
@@ -1747,7 +1772,7 @@ function tabtable:Select()
     
     task.spawn(function()
         for _,v in next, containers:GetChildren() do
-            if v.ClassName == "ScrollingFrame" and v ~= Left and v ~= Right then
+            if v.ClassName == "ScrollingFrame" and v ~= Left and v ~= Right and v ~= center then
                 v.Visible = false
             end
         end
@@ -1766,6 +1791,7 @@ function tabtable:Select()
     end)
     Left.Visible = true
     Right.Visible = true
+    center.Visible = true
     TweenService:Create(tabFrame, TweenInfo.new(.2, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {Size = UDim2.new(0, 122,0, 25)}):Play()
     TweenService:Create(tabName, TweenInfo.new(.2, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {Size = UDim2.new(0, 122,0, 25)}):Play()
     TweenService:Create(tabuIStroke, TweenInfo.new(.2, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {Color = Theme.HighlightUIStroke}):Play()
@@ -1781,20 +1807,16 @@ end)
 function tabtable:Executor(Info)
 Info.Title = Info.Text or "Section"
 Info.Side = Info.Side or "center"
-Info.Opened = Info.Opened or library.SectionsOpened
 
 Sections = Sections - 3
 
-local labeltable = {}
 
 local sectionLabel = Instance.new("Frame")
 sectionLabel.Name = "Section"
 sectionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 sectionLabel.BackgroundTransparency = 1
-sectionLabel.Size = UDim2.new(0, 100, 0, 30)
-
-local SectionLabelOpened = Instance.new("BoolValue", sectionLabel)
-SectionLabelOpened.Value = Info.Opened
+sectionLabel.Size = UDim2.new(0, 360, 0, 28)
+sectionLabel.Parent = center
 
 if Info.Side == "center" then
     sectionLabel.Parent = center
@@ -1802,11 +1824,11 @@ else
     sectionLabel.Parent = Right
 end
 
-
 local sectionLabelFrame = Instance.new("Frame")
 sectionLabelFrame.Name = "SectionFrame"
 sectionLabelFrame.BackgroundColor3 = Theme.SectionFrame
 sectionLabelFrame.BorderSizePixel = 0
+sectionLabelFrame.Size = UDim2.new(0, 355, 0, 24)
 sectionLabelFrame.Parent = sectionLabel
 
 local sectionLabelUICorner = Instance.new("UICorner")
@@ -1824,13 +1846,10 @@ sectionLabelName.TextWrapped = true
 sectionLabelName.TextXAlignment = Enum.TextXAlignment.Left
 sectionLabelName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 sectionLabelName.BackgroundTransparency = 1
-sectionLabelName.Position = UDim2.new(0.0343, 0, 0, 0)
+sectionLabelName.Position = UDim2.new(0, 0, 0, 0)
 sectionLabelName.Parent = sectionLabelFrame
+sectionLabelName.Size = UDim2.new(1, 0, 1, 0) -- Menyamakan ukuran dengan
 sectionLabelName.ZIndex = Sections + 2
-
-local Sizee = string.len(sectionLabelName.Text) * 0.2
-       sectionLabelFrame.Size = UDim2.new(0, 355, 0, Sizee)
-       sectionLabelName.Size = UDim2.new(0, 335, 0, Sizee)
 
 local sectionLabelButton = Instance.new("TextButton")
 sectionLabelButton.Name = "SectionButton"
@@ -1860,9 +1879,8 @@ local itemLabelContainer = Instance.new("Frame")
 itemLabelContainer.Name = "ItemContainer"
 itemLabelContainer.BackgroundColor3 = Theme.ContainerHolder
 itemLabelContainer.BorderSizePixel = 0
-itemLabelContainer.Size = UDim2.new(0, 355, 0, 0)
+itemLabelContainer.Size = UDim2.new(0, 355, 0, 100)
 itemLabelContainer.Parent = containerLabelHolder
-
 
 local itemLabelUIListLayout = Instance.new("UIListLayout")
 itemLabelUIListLayout.Name = "itemLabelUIListLayout"
@@ -1875,7 +1893,23 @@ sectionLabelUIStroke.Color = Theme.SectionUIStroke
 sectionLabelUIStroke.Parent = sectionLabelFrame
 
 
-return labeltable
+
+
+local FramePos = Instance.new("Frame")
+FramePos.Parent = center
+FramePos.BackgroundColor3 = Theme.SectionFrame
+FramePos.BorderSizePixel = 0
+FramePos.Size = UDim2.new(0, 355, 0, 120)
+
+local framePosUICorner = Instance.new("UICorner")
+framePosUICorner.Name = "FramePosUICorner"
+framePosUICorner.CornerRadius = UDim.new(0, 2)
+framePosUICorner.Parent = FramePos
+
+
+
+
+
 end
 
 
