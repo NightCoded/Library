@@ -358,7 +358,7 @@ main.Name = "Main"
 main.BackgroundColor3 = Theme.Main
 main.BorderSizePixel = 0
 main.Position = UDim2.new(0.345, 0, 0.291, 0)
-main.Size = UDim2.new(0, 500, 0, 350)
+main.Size = UDim2.new(0, 500, 0, 300)
 main.Parent = unnamed
 main.ClipsDescendants = true
 
