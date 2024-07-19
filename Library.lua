@@ -350,7 +350,7 @@ mainShadow.ImageTransparency = 0.2
 mainShadow.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 mainShadow.BackgroundTransparency = 1
 mainShadow.Position = UDim2.new(0.339, 0, 0.279, 0)
-mainShadow.Size = UDim2.new(0, 520, 0, 370)
+mainShadow.Size = UDim2.new(0, 520, 0, 270)
 mainShadow.Parent = shadow
 
 local main = Instance.new("Frame")
@@ -358,7 +358,7 @@ main.Name = "Main"
 main.BackgroundColor3 = Theme.Main
 main.BorderSizePixel = 0
 main.Position = UDim2.new(0.345, 0, 0.291, 0)
-main.Size = UDim2.new(0, 500, 0, 300)
+main.Size = UDim2.new(0, 500, 0, 250)
 main.Parent = unnamed
 main.ClipsDescendants = true
 
