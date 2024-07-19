@@ -362,6 +362,14 @@ main.Size = UDim2.new(0, 500, 0, 350)
 main.Parent = unnamed
 main.ClipsDescendants = true
 
+local function centerGui()
+    local screenWidth = game:GetService("GuiService"):GetScreenResolution().X
+    local screenHeight = game:GetService("GuiService"):GetScreenResolution().Y
+    main.Position = UDim2.new(0.5, -main.Size.X.Offset / 2, 0.5, -main.Size.Y.Offset / 2)
+    end
+    
+    centerGui()
+
 local uICorner = Instance.new("UICorner")
 uICorner.Name = "UICorner"
 uICorner.CornerRadius = UDim.new(0, 3)
@@ -378,14 +386,6 @@ local dragging
 local dragInput
 local dragStart
 local startPos
-
-local function centerGui()
-    local screenWidth = game:GetService("GuiService"):GetScreenResolution().X
-    local screenHeight = game:GetService("GuiService"):GetScreenResolution().Y
-    main.Position = UDim2.new(0.5, -main.Size.X.Offset / 2, 0.5, -main.Size.Y.Offset / 2)
-    end
-    
-    centerGui()
 
 local function update(input)
     local delta = input.Position - dragStart
